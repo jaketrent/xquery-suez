@@ -5,17 +5,21 @@ module namespace channel = "http://missionary.lds.org/audience/cutlass/modules/c
 declare option xdmp:mapping "false";
 
 declare function isolate($url as xs:string?, $channels as element()?) as element()? {
+  isolate($url, $channels, ())
+};
+
+declare function isolate($url as xs:string?, $channels as element()?, $options as element()?) as element()? {
   if (fn:exists($url) and fn:exists($channels)) then
     let $match := findDeepestChannel($url, $channels)
     return if (fn:exists($match)) then
-      reverseBuildTree($match, ())
+      reverseBuildTree($match, (), $options)
     else
       ()
   else
     ()
 };
 
-declare function findDeepestChannel($url as xs:string, $channels as element()?) as element()? {
+declare private function findDeepestChannel($url as xs:string, $channels as element()?) as element()? {
   let $match := $channels//channel[path eq $url]
   return if (fn:exists($match)) then
     $match
@@ -37,7 +41,7 @@ declare private function rmOneUrlLevel($url as xs:string) as xs:string {
   return fn:concat($once, "/")
 };
 
-declare private function reverseBuildTree($activeChannel as element()?, $newTree as element()?) as element()? {
+declare private function reverseBuildTree($activeChannel as element()?, $newTree as element()?, $options as element()?) as element()? {
   if (fn:empty($activeChannel)) then
     $newTree
   else
@@ -50,22 +54,34 @@ declare private function reverseBuildTree($activeChannel as element()?, $newTree
           },
           $activeChannel/@*,
           $activeChannel/(* except channels),
-          $newTree
+          if (fn:exists($newTree)) then
+            $newTree
+          else
+            addChildChannels($activeChannel, $options)
         },
         $activeChannel/following-sibling::channel
       }
     let $shallowerChannel := $activeChannel/../..
-    return reverseBuildTree($shallowerChannel, $newLevel)
+    return reverseBuildTree($shallowerChannel, $newLevel, $options)
+};
+
+declare function addChildChannels($activeChannel as element(), $options as element()?) as element()? {
+  if (fn:exists($options/child-levels)) then
+    element channels {
+      $activeChannel/channels/channel
+    }
+  else
+    ()
 };
 
 (:~ @see http://www.xqueryfunctions.com/xq/functx_substring-before-last.html ~:)
-declare function substring-before-last($arg as xs:string?, $delim as xs:string) as xs:string {
+declare private function substring-before-last($arg as xs:string?, $delim as xs:string) as xs:string {
     if (fn:matches($arg, escape-for-regex($delim))) then
         fn:replace($arg, fn:concat('^(.*)', escape-for-regex($delim), '.*'), '$1')
     else ''
 };
 
 (:~ @see http://www.xqueryfunctions.com/xq/functx_escape-for-regex.html ~:)
-declare function escape-for-regex($arg as xs:string?) as xs:string {
+declare private function escape-for-regex($arg as xs:string?) as xs:string {
     fn:replace($arg, '(\.|\[|\]|\\|\||\-|\^|\$|\?|\*|\+|\{|\}|\(|\))', '\\$1')
 } ;

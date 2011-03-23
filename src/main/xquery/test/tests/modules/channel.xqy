@@ -176,6 +176,6 @@ declare function (:TEST:) isolate_buildOneChildLevelNoMatch() {
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels, $options)
-  return tu:assertEq($actual, $expected, "Option of unactive child channels gets respect")
+  return tu:assertEq($actual, $expected, "Option of inactive child channels gets respect")
 };
 
