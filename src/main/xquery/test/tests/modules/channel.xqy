@@ -46,7 +46,7 @@ declare function (:TEST:) isolate_matchWholeTree() {
     </channels>
   let $expected :=
     <channels>
-      <channel>
+      <channel active="true">
         <name>Transplant</name>
         <path>/transplant/me/</path>
       </channel>
@@ -71,6 +71,10 @@ declare function (:TEST:) isolate_matchLevel1PartialTree() {
   let $expected :=
     <channels>
       <channel>
+        <name>Yay!</name>
+        <path>/yay/bacon/</path>
+      </channel>
+      <channel active="true">
         <name>With Bacon</name>
         <path>/salad/entree/</path>
       </channel>
