@@ -27,4 +27,30 @@ declare function (:TEST:) isolate_withUrlNoChannels() {
   let $actual := channel:isolate($url, $channels)
   return tu:assertEmpty($actual, "With url, no channels, no result")
 };
-  
+
+declare function (:TEST:) isolate_unmatchedUrl() {
+  let $url := "/some/url/"
+  let $channels := <channels />
+  let $actual := channel:isolate($url, $channels)
+  return tu:assertEmpty($actual, "With url, no channels, no result")
+};
+
+declare function (:TEST:) isolateChannels_matchWholeTree() {
+  let $url := ""
+  let $channels :=
+    <channels>
+      <channel>
+        <name>Transplant</name>
+        <path>/transplant/me/</path>
+      </channel>
+    </channels>
+  let $expected :=
+    <channels>
+      <channel>
+        <name>Transplant</name>
+        <path>/transplant/me/</path>
+      </channel>
+    </channels>
+  let $actual := channel:isolate($url, $channels)
+  return tu:assertEq($actual, $expected, "Whole tree matched, tree returned")
+};
