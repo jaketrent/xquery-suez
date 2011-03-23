@@ -55,7 +55,7 @@ declare function (:TEST:) isolate_matchWholeTree() {
   return tu:assertEq($actual, $expected, "Whole tree matched, tree returned")
 };
 
-declare function (:TEST:) isolate_matchLevel1PartialTree() {
+declare function (:TEST:) isolate_matchLevel1() {
   let $url := "/salad/entree/"
   let $channels :=
     <channels>
@@ -80,5 +80,45 @@ declare function (:TEST:) isolate_matchLevel1PartialTree() {
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels)
-  return tu:assertEq($actual, $expected, "Whole tree matched, tree returned")
+  return tu:assertEq($actual, $expected, "Match found on tree level1, make active")
+};
+  
+declare function (:TEST:) isolate_matchLevel2() {
+  let $url := "/bacon/hotpocket/"
+  let $channels :=
+    <channels>
+      <channel>
+        <name>Yay!</name>
+        <path>/yay/bacon/</path>
+      </channel>
+      <channel>
+        <name>With Bacon</name>
+        <path>/salad/entree/</path>
+        <channels>
+          <channel>
+            <name>Bacon Hotpocket</name>
+            <path>/bacon/hotpocket/</path>
+          </channel>
+        </channels>
+      </channel>
+    </channels>
+  let $expected :=
+    <channels>
+      <channel>
+        <name>Yay!</name>
+        <path>/yay/bacon/</path>
+      </channel>
+      <channel active="true">
+        <name>With Bacon</name>
+        <path>/salad/entree/</path>
+        <channels>
+          <channel active="true">
+            <name>Bacon Hotpocket</name>
+            <path>/bacon/hotpocket/</path>
+          </channel>
+        </channels>
+      </channel>
+    </channels>
+  let $actual := channel:isolate($url, $channels)
+  return tu:assertEq($actual, $expected, "Matched level2 channel, active path across levels")
 };
