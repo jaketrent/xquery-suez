@@ -142,3 +142,40 @@ declare function (:TEST:) isolate_getClosestMatchToSpecificMatch() {
   let $actual := channel:isolate($url, $channels)
   return tu:assertEq($actual, $expected, "Hierarchal urls should match at more general levels if url isn't specified")
 };
+
+declare function (:TEST:) isolate_buildOneChildLevelNoMatch() {
+  let $url := "/parent/"
+  let $channels :=
+    <channels>
+      <channel>
+        <name>Parent</name>
+        <path>/parent/</path>
+        <channels>
+          <channel>
+            <name>Child 1</name>
+            <path>/parent/child1/</path>
+          </channel>
+        </channels>
+      </channel>
+    </channels>
+  let $options :=
+    <options>
+      <child-levels>1</child-levels>
+    </options>
+  let $expected :=
+    <channels>
+      <channel active="true">
+        <name>Parent</name>
+        <path>/parent/</path>
+        <channels>
+          <channel>
+            <name>Child 1</name>
+            <path>/parent/child1/</path>
+          </channel>
+        </channels>
+      </channel>
+    </channels>
+  let $actual := channel:isolate($url, $channels, $options)
+  return tu:assertEq($actual, $expected, "Option of unactive child channels gets respect")
+};
+
