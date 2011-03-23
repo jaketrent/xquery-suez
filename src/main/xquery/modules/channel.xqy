@@ -1,6 +1,6 @@
 xquery version "1.0-ml";
 
-module namespace nav = "http://missionary.lds.org/audience/cutlass/modules/nav";
+module namespace channel = "http://missionary.lds.org/audience/cutlass/modules/channel";
 
 declare option xdmp:mapping "false";
 
