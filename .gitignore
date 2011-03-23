@@ -1,0 +1,12 @@
+syntax:glob
+*.pyc
+*.iml
+*.ipr
+*.iws
+nbproject/*
+*~
+#*#
+config.ini
+.idea/*
+dev/*
+target/*
