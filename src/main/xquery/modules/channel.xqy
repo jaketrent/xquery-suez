@@ -6,8 +6,19 @@ declare option xdmp:mapping "false";
 
 declare function isolate($url as xs:string?, $channels as element()*) as element()? {
   if (fn:exists($url)) then
-    if (fn:exists($channels/channel[path eq $url])) then
-      $channels
+    let $match := $channels/channel[path eq $url]
+    return if (fn:exists($match)) then
+      element channels {
+        $match/preceding-sibling::channel,
+        element channel {
+          attribute active {
+            "true"
+          },
+          $match/@*,
+          $match/*
+        },
+        $match/following-sibling::channel
+      }
     else
       ()
   else
