@@ -54,3 +54,27 @@ declare function (:TEST:) isolate_matchWholeTree() {
   let $actual := channel:isolate($url, $channels)
   return tu:assertEq($actual, $expected, "Whole tree matched, tree returned")
 };
+
+declare function (:TEST:) isolate_matchLevel1PartialTree() {
+  let $url := "/salad/entree/"
+  let $channels :=
+    <channels>
+      <channel>
+        <name>Yay!</name>
+        <path>/yay/bacon/</path>
+      </channel>
+      <channel>
+        <name>With Bacon</name>
+        <path>/salad/entree/</path>
+      </channel>
+    </channels>
+  let $expected :=
+    <channels>
+      <channel>
+        <name>With Bacon</name>
+        <path>/salad/entree/</path>
+      </channel>
+    </channels>
+  let $actual := channel:isolate($url, $channels)
+  return tu:assertEq($actual, $expected, "Whole tree matched, tree returned")
+};
