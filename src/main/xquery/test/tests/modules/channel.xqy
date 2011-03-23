@@ -122,3 +122,23 @@ declare function (:TEST:) isolate_matchLevel2() {
   let $actual := channel:isolate($url, $channels)
   return tu:assertEq($actual, $expected, "Matched level2 channel, active path across levels")
 };
+
+declare function (:TEST:) isolate_getClosestMatchToSpecificMatch() {
+  let $url := "/something/very/specific/"
+  let $channels :=
+    <channels>
+      <channel>
+        <name>Something</name>
+        <path>/something/</path>
+      </channel>
+    </channels>
+  let $expected :=
+    <channels>
+      <channel active="true">
+        <name>Something</name>
+        <path>/something/</path>
+      </channel>
+    </channels>
+  let $actual := channel:isolate($url, $channels)
+  return tu:assertEq($actual, $expected, "Hierarchal urls should match at more general levels if url isn't specified")
+};
