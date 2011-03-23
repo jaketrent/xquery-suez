@@ -35,8 +35,8 @@ declare function (:TEST:) isolate_unmatchedUrl() {
   return tu:assertEmpty($actual, "With url, no channels, no result")
 };
 
-declare function (:TEST:) isolateChannels_matchWholeTree() {
-  let $url := ""
+declare function (:TEST:) isolate_matchWholeTree() {
+  let $url := "/transplant/me/"
   let $channels :=
     <channels>
       <channel>
