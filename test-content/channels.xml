@@ -1,0 +1,46 @@
+<channels>
+  <channel>
+    <name>Missionary Service</name>
+    <path>http://lds.org/service/missionary-service</path>
+    <channels>
+      <channel>
+        <name>Senior Missionaries</name>
+        <path>http://lds.org/service/missionary-service/senior-missionaries</path>
+      </channel>
+      <channel>
+        <name>Church Service Missionaries</name>
+        <path>http://lds.org/service/missionary-service/church-service-missionaries</path>
+      </channel>
+      <channel>
+        <name>Dress &amp; Grooming</name>
+        <path>/dress-grooming/</path>
+        <channels>
+          <channel>
+            <name>Clothing</name>
+            <path>/dress-grooming/dress/</path>
+            <default-url>/dress-grooming/dress/blouses/</default-url>
+          </channel>
+          <channel>
+            <name>Personal Grooming</name>
+            <path>/dress-grooming/grooming/</path>
+            <channels>
+              <channel>
+                <name>Makeup Tips</name>
+                <path>/dress-grooming/grooming/demo/</path>
+                <default-url>/dress-grooming/grooming/demo/skin/</default-url>
+              </channel>
+            </channels>
+          </channel>
+          <channel>
+            <name>General Guidelines</name>
+            <path>/dress-grooming/guidelines/</path>
+          </channel>
+          <channel>
+            <name>FAQ</name>
+            <path>/dress-grooming/faq/</path>
+          </channel>
+        </channels>
+      </channel>
+    </channels>
+  </channel>
+</channels>

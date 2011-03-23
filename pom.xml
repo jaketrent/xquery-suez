@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <groupId>org.lds.marklogic.platform</groupId>
+    <artifactId>marklogic-master</artifactId>
+    <version>4.2-2v1-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.lds.missionary.audience</groupId>
+  <artifactId>suez</artifactId>
+  <packaging>xar</packaging>
+  <name>Xquery-suez</name>
+  <version>0.1</version>
+  <description>Finds appropriate channels and displays them</description>
+
+  <repositories>
+    <repository>
+      <id>lds-main</id>
+      <name>LDS Main Repo</name>
+      <url>http://icslib/maven2/archive/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>lds-plugin</id>
+      <name>LDS Plugin Repo</name>
+      <url>http://icslib/maven2/archive/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.lds.marklogic.shared</groupId>
+      <artifactId>xqtest</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <type>xar</type>
+    </dependency>
+  </dependencies>
+
+</project>
+
+
+
