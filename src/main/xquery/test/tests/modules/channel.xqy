@@ -143,7 +143,7 @@ declare function (:TEST:) isolate_getClosestMatchToSpecificMatch() {
   return tu:assertEq($actual, $expected, "Hierarchal urls should match at more general levels if url isn't specified")
 };
 
-declare function (:TEST:) isolate_buildOneChildLevelNoMatch() {
+declare function (:TEST:) isolate_buildOneChildLevel() {
   let $url := "/parent/"
   let $channels :=
     <channels>
@@ -177,5 +177,95 @@ declare function (:TEST:) isolate_buildOneChildLevelNoMatch() {
     </channels>
   let $actual := channel:isolate($url, $channels, $options)
   return tu:assertEq($actual, $expected, "Option of inactive child channels gets respect")
+};
+
+declare function (:TEST:) isolate_buildTwoChildLevel() {
+  let $url := "/parent/"
+  let $channels :=
+    <channels>
+      <channel>
+        <name>Parent</name>
+        <path>/parent/</path>
+        <channels>
+          <channel>
+            <name>Child 1</name>
+            <path>/parent/child1/</path>
+            <channels>
+              <channel>
+                <name>Grandchild 1</name>
+                <path>/parent/child/grandchild/</path>
+              </channel>
+            </channels>
+          </channel>
+        </channels>
+      </channel>
+    </channels>
+  let $options :=
+    <options>
+      <child-levels>2</child-levels>
+    </options>
+  let $expected :=
+    <channels>
+      <channel active="true">
+        <name>Parent</name>
+        <path>/parent/</path>
+        <channels>
+          <channel>
+            <name>Child 1</name>
+            <path>/parent/child1/</path>
+            <channels>
+              <channel>
+                <name>Grandchild 1</name>
+                <path>/parent/child/grandchild/</path>
+              </channel>
+            </channels>
+          </channel>
+        </channels>
+      </channel>
+    </channels>
+  let $actual := channel:isolate($url, $channels, $options)
+  return tu:assertEq($actual, $expected, "Child-levels can go multiple levels deep")
+};
+
+declare function (:TEST:) isolate_buildOneChildLevelWhenTwoExist() {
+  let $url := "/parent/"
+  let $channels :=
+    <channels>
+      <channel>
+        <name>Parent</name>
+        <path>/parent/</path>
+        <channels>
+          <channel>
+            <name>Child 1</name>
+            <path>/parent/child1/</path>
+            <channels>
+              <channel>
+                <name>Grandchild 1</name>
+                <path>/parent/child/grandchild/</path>
+              </channel>
+            </channels>
+          </channel>
+        </channels>
+      </channel>
+    </channels>
+  let $options :=
+    <options>
+      <child-levels>1</child-levels>
+    </options>
+  let $expected :=
+    <channels>
+      <channel active="true">
+        <name>Parent</name>
+        <path>/parent/</path>
+        <channels>
+          <channel>
+            <name>Child 1</name>
+            <path>/parent/child1/</path>
+          </channel>
+        </channels>
+      </channel>
+    </channels>
+  let $actual := channel:isolate($url, $channels, $options)
+  return tu:assertEq($actual, $expected, "Child-levels can go multiple levels deep")
 };
 
