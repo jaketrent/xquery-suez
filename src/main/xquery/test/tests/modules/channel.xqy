@@ -7,24 +7,24 @@ import module namespace tu = "http://lds.org/code/shared/xqtest/utils" at "/shar
 
 declare option xdmp:mapping "false";
 
-declare function (:TEST:) isolateChannels_noUrlNoChannels() {
+declare function (:TEST:) isolate_noUrlNoChannels() {
   let $url := ()
   let $channels := ()
-  let $actual := channel:isolateChannels($url, $channels)
+  let $actual := channel:isolate($url, $channels)
   return tu:assertEmpty($actual, "No url, no channel, no result")
 };
 
-declare function (:TEST:) isolateChannels_noUrlWithChannels() {
+declare function (:TEST:) isolate_noUrlWithChannels() {
   let $url := ()
   let $channels := <channels />
-  let $actual := channel:isolateChannels($url, $channels)
+  let $actual := channel:isolate($url, $channels)
   return tu:assertEmpty($actual, "No url, with channels, no result")
 };
 
-declare function (:TEST:) isolateChannels_withUrlNoChannels() {
+declare function (:TEST:) isolate_withUrlNoChannels() {
   let $url := "/some/url/"
   let $channels := ()
-  let $actual := channel:isolateChannels($url, $channels)
+  let $actual := channel:isolate($url, $channels)
   return tu:assertEmpty($actual, "With url, no channels, no result")
 };
   

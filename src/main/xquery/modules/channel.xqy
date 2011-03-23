@@ -4,6 +4,6 @@ module namespace channel = "http://missionary.lds.org/audience/cutlass/modules/c
 
 declare option xdmp:mapping "false";
 
-declare function isolateChannels($url as xs:string?, $channels as element()*) as element()? {
+declare function isolate($url as xs:string?, $channels as element()*) as element()? {
   ()
 };
