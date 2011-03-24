@@ -25,13 +25,23 @@ declare private function renderList($channels as element()?) as element()? {
     element ul {
       for $ch in $channels/channel
       return element li {
-        ( renderLink($ch)
+        ( if (isActiveLink($ch)) then
+            attribute class {
+              "active"
+            }
+          else
+            ()
+        , renderLink($ch)
         , renderList($ch/channels)
         ) 
       }
     }
   else
     ()
+};
+
+declare function isActiveLink($channel as element()) as xs:boolean {
+  fn:empty($channel/channels) and xs:string($channel/@active) eq "true"
 };
 
 declare private function renderLink($channel as element()) as element() {

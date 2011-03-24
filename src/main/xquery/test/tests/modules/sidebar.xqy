@@ -162,7 +162,7 @@ declare function (:TEST:) render_activePathOver3Levels() {
           <a href="/list/item/2/">List Item 2</a>
           <ul>
             <li class="active"><a href="/list/item/2/indented/1/">Indented Item 2 - 1</a></li>
-            <li><a href="/list/item/2/indented/1/">Indented Item 2 - 2</a></li>
+            <li><a href="/list/item/2/indented/2/">Indented Item 2 - 2</a></li>
           </ul>
         </li>
       </ul>
