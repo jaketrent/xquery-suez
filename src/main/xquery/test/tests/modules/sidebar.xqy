@@ -13,3 +13,10 @@ declare function (:TEST:) render_noChannels() {
   let $actual := sidebar:render($channels)
   return tu:assertEq($actual, $expected, "No channel, empty ul")
 };
+
+declare function (:TEST:) render_channelsNoChannel() {
+  let $channels := <channels />
+  let $expected := <ul>&nbsp;</ul>
+  let $actual := sidebar:render($channels)
+  return tu:assertEq($actual, $expected, "No channel data, empty ul")
+};
