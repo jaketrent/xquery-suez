@@ -4,22 +4,22 @@ module namespace channel = "http://missionary.lds.org/audience/cutlass/modules/c
 
 declare option xdmp:mapping "false";
 
-declare function build
+declare function render
     ( $url as xs:string?
     , $channels as element()?
-    , $builder as xdmp:function
+    , $renderer as xdmp:function
     ) as element()? {
-  build($url, $channels, $builder, ())
+  render($url, $channels, $renderer, ())
 };
 
-declare function build
+declare function render
     ( $url as xs:string?
     , $channels as element()?
-    , $builder as xdmp:function
+    , $renderer as xdmp:function
     , $options as element()?
     ) as element()? {
   let $channels := isolate($url, $channels, $options)
-  return xdmp:apply($builder, $channels)
+  return xdmp:apply($renderer, $channels)
 };
 
 declare function isolate($url as xs:string?, $channels as element()?) as element()? {
