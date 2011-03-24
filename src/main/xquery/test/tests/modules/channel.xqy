@@ -313,3 +313,49 @@ declare function (:TEST:) isolate_buildOneChildLevelMultipleChildren() {
   return tu:assertEq($actual, $expected, "Child-levels must print all children")
 };
 
+declare function (:TEST:) isolate_showOnlyActiveChannelsSubchannel() {
+  let $url := "/channel/active/subchannel/"
+  let $channels :=
+    <channels>
+      <channel>
+        <name>Active Channel</name>
+        <path>/channel/active/</path>
+        <channels>
+          <channel>
+            <name>Active Subchannel</name>
+            <path>/channel/active/subchannel/</path>
+          </channel>
+        </channels>
+      </channel>
+      <channel>
+        <name>Inactive Channel</name>
+        <path>/channel/inactive/</path>
+        <channels>
+          <channel>
+            <name>Inactive Subchannel</name>
+            <path>/channel/inactive/subchannel/</path>
+          </channel>
+        </channels>
+      </channel>
+    </channels>
+  let $expected :=
+    <channels>
+      <channel active="true">
+        <name>Active Channel</name>
+        <path>/channel/active/</path>
+        <channels>
+          <channel active="true">
+            <name>Active Subchannel</name>
+            <path>/channel/active/subchannel/</path>
+          </channel>
+        </channels>
+      </channel>
+      <channel>
+        <name>Inactive Channel</name>
+        <path>/channel/inactive/</path>
+      </channel>
+    </channels>
+  let $actual := channel:isolate($url, $channels)
+  return tu:assertEq($actual, $expected, "Subchannels should only be shown along active path into the tree")
+};
+
