@@ -92,13 +92,13 @@ declare function addChildChannels
     , $okToAddLevel as xdmp:function
     , $options as element()?
     ) as element()? {
-  if (xdmp:apply($okToAddLevel, $levelsAdded, $options)) then
+  if (xdmp:apply($okToAddLevel, $levelsAdded, $options) and fn:exists($activeChannel/channels/channel)) then
     element channels {
       for $channel in $activeChannel/channels/channel
       return element channel {
         $channel/@*,
         $channel/(* except channels),
-        addChildChannels($channel, $levelsAdded + 1, xdmp:function(xs:QName("channel:lessThanChildLevel")), $options)
+        addChildChannels($channel, $levelsAdded + 1, $okToAddLevel, $options)
       }
     }
   else
