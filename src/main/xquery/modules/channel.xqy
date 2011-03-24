@@ -41,7 +41,11 @@ declare private function rmOneUrlLevel($url as xs:string) as xs:string {
   return fn:concat($once, "/")
 };
 
-declare private function reverseBuildTree($activeChannel as element()?, $newTree as element()?, $options as element()?) as element()? {
+declare private function reverseBuildTree
+    ( $activeChannel as element()?
+    , $newTree as element()?
+    , $options as element()?
+    ) as element()? {
   if (fn:empty($activeChannel)) then
     $newTree
   else
@@ -73,7 +77,11 @@ declare function getChannelNoSubchannels($channels as element()*) as element()* 
   }
 };
 
-declare function addChildChannels($activeChannel as element(), $numLevels as xs:int, $options as element()?) as element()? {
+declare function addChildChannels
+    ( $activeChannel as element()
+    , $numLevels as xs:int
+    , $options as element()?
+    ) as element()? {
   let $childLevels := $options/child-levels
   return if (fn:exists($childLevels) and $numLevels lt xs:int($options/child-levels)) then
     element channels {
