@@ -14,7 +14,8 @@ declare function isolate($url as xs:string?, $channels as element()?, $options a
     return if (fn:exists($match)) then
       reverseBuildTree($match, (), $options)
     else
-      ()
+      addChildChannels(element channel { $channels }, 0,
+        xdmp:function(xs:QName("channel:lessThanNoMatchLevel")), $options)
   else
     ()
 };
@@ -61,7 +62,7 @@ declare private function reverseBuildTree
           if (fn:exists($newTree)) then
             $newTree
           else
-            addChildChannels($activeChannel, 0, $options)
+            addChildChannels($activeChannel, 0, xdmp:function(xs:QName("channel:lessThanChildLevel")), $options)
         },
         getChannelNoSubchannels($activeChannel/following-sibling::channel)
       }
@@ -77,19 +78,27 @@ declare function getChannelNoSubchannels($channels as element()*) as element()* 
   }
 };
 
+declare function lessThanChildLevel($levelsAdded as xs:int, $options as element()?) as xs:boolean {
+  fn:exists($options/child-levels) and $levelsAdded lt xs:int($options/child-levels)
+};
+
+declare function lessThanNoMatchLevel($levelsAdded as xs:int, $options as element()?) as xs:boolean {
+  fn:exists($options/no-match-levels) and $levelsAdded lt xs:int($options/no-match-levels)
+};
+
 declare function addChildChannels
-    ( $activeChannel as element()
-    , $numLevels as xs:int
+    ( $activeChannel as element()?
+    , $levelsAdded as xs:int
+    , $okToAddLevel as xdmp:function
     , $options as element()?
     ) as element()? {
-  let $childLevels := $options/child-levels
-  return if (fn:exists($childLevels) and $numLevels lt xs:int($options/child-levels)) then
+  if (xdmp:apply($okToAddLevel, $levelsAdded, $options)) then
     element channels {
       for $channel in $activeChannel/channels/channel
       return element channel {
         $channel/@*,
         $channel/(* except channels),
-        addChildChannels($channel, $numLevels + 1, $options)
+        addChildChannels($channel, $levelsAdded + 1, xdmp:function(xs:QName("channel:lessThanChildLevel")), $options)
       }
     }
   else

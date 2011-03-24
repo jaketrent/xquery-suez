@@ -379,7 +379,7 @@ declare function (:TEST:) isolate_noMatchLevels() {
         <path>/even/without/match/</path>
       </channel>
     </channels>
-  let $actual := channel:isolate($url, $channels)
+  let $actual := channel:isolate($url, $channels, $options)
   return tu:assertEq($actual, $expected, "No url match can give you level of inactive children")
 };
 
