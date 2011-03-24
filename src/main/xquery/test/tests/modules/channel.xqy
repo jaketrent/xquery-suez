@@ -383,13 +383,19 @@ declare function (:TEST:) isolate_noMatch1Level() {
   return tu:assertEq($actual, $expected, "No url match can give you level of inactive children")
 };
 
-declare function (:TEST:) isolate_noMatch3Levels1LevelExists() {
+declare function (:TEST:) isolate_noMatch3Levels2LevelsExists() {
   let $url := "/no/match/"
   let $channels :=
     <channels>
       <channel>
         <name>Still Shown</name>
         <path>/even/without/match/</path>
+        <channels>
+          <channel>
+            <name>Should Show</name>
+            <path>/also/shown/</path>
+          </channel>
+        </channels>
       </channel>
     </channels>
   let $options :=
@@ -401,6 +407,12 @@ declare function (:TEST:) isolate_noMatch3Levels1LevelExists() {
       <channel>
         <name>Still Shown</name>
         <path>/even/without/match/</path>
+        <channels>
+          <channel>
+            <name>Should Show</name>
+            <path>/also/shown/</path>
+          </channel>
+        </channels>
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels, $options)
