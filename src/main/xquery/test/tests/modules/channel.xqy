@@ -269,6 +269,42 @@ declare function (:TEST:) isolate_buildOneChildLevelWhenTwoExist() {
   return tu:assertEq($actual, $expected, "Child-levels can go multiple levels deep")
 };
 
+declare function (:TEST:) isolate_buildMaxChildLevelsIfSetToMore() {
+  let $url := "/parent/"
+  let $channels :=
+    <channels>
+      <channel>
+        <name>Parent</name>
+        <path>/parent/</path>
+        <channels>
+          <channel>
+            <name>Child 1</name>
+            <path>/parent/child1/</path>
+          </channel>
+        </channels>
+      </channel>
+    </channels>
+  let $options :=
+    <options>
+      <child-levels>4</child-levels>
+    </options>
+  let $expected :=
+    <channels>
+      <channel active="true">
+        <name>Parent</name>
+        <path>/parent/</path>
+        <channels>
+          <channel>
+            <name>Child 1</name>
+            <path>/parent/child1/</path>
+          </channel>
+        </channels>
+      </channel>
+    </channels>
+  let $actual := channel:isolate($url, $channels, $options)
+  return tu:assertEq($actual, $expected, "If the child-levels option is more than what exists, show what exists")
+};
+
 declare function (:TEST:) isolate_buildOneChildLevelMultipleChildren() {
   let $url := "/parent/"
   let $channels :=
