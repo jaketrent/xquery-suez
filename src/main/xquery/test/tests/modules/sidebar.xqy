@@ -82,3 +82,40 @@ declare function (:TEST:) render_level2ListNoActive() {
   let $actual := sidebar:render($channels)
   return tu:assertEq($actual, $expected/*, "Level 2 channels go to level 1 list, no active if not set")
 };
+  
+declare function (:TEST:) render_level3ListNoActive() {
+  let $channels :=
+    <channels>
+      <channel>
+        <name>Header</name>
+        <path>/header/</path>
+        <channels>
+          <name>List Item 1</name>
+          <path>/list/item/1/</path>
+          <channels>
+            <channel>
+              <name>Indented Item 1</name>
+              <path>/list/item/1/indented/1/</path>
+            </channel>
+          </channels>
+        </channels>
+      </channel>
+    </channels>
+  let $expected :=
+    <expected>
+      <h2><a href="/header/">Header</a></h2>
+      <hr />
+      <ul>
+        <li>
+          <a href="/list/item/1/">List Item 1</a>
+          <ul>
+            <li>
+              <a href="/list/item/1/indented/1/">Indented Item 1</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </expected>
+  let $actual := sidebar:render($channels)
+  return tu:assertEq($actual, $expected/*, "Level 3 channels go to indented level 2 list, no active if not set")
+};
