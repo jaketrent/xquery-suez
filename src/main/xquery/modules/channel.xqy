@@ -8,7 +8,7 @@ declare function render
     ( $url as xs:string?
     , $channels as element()?
     , $renderer as xdmp:function
-    ) as element()? {
+    ) as element()* {
   render($url, $channels, $renderer, ())
 };
 
@@ -17,7 +17,7 @@ declare function render
     , $channels as element()?
     , $renderer as xdmp:function
     , $options as element()?
-    ) as element()? {
+    ) as element()* {
   let $channels := isolate($url, $channels, $options)
   return xdmp:apply($renderer, $channels)
 };

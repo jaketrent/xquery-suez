@@ -58,3 +58,27 @@ declare function (:TEST:) render_headerOnlyMultipleLevel1Channel() {
   let $actual := sidebar:render($channels)
   return tu:assertEq($actual, $expected/*, "Multiple channels, default to 1st for header")
 };
+
+declare function (:TEST:) render_level2ListNoActive() {
+  let $channels :=
+    <channels>
+      <channel>
+        <name>Header</name>
+        <path>/header/</path>
+        <channels>
+          <name>List Item 1</name>
+          <path>/list/item/1/</path>
+        </channels>
+      </channel>
+    </channels>
+  let $expected :=
+    <expected>
+      <h2><a href="/header/">Header</a></h2>
+      <hr />
+      <ul>
+        <li><a href="/list/item/1/">List Item 1</a></li>
+      </ul>
+    </expected>
+  let $actual := sidebar:render($channels)
+  return tu:assertEq($actual, $expected/*, "Level 2 channels go to level 1 list, no active if not set")
+};
