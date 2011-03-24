@@ -6,19 +6,37 @@ declare option xdmp:mapping "false";
 
 declare function render($channels as element()?) as element()* {
   if (fn:exists($channels) and fn:exists($channels/channel)) then
-    renderHeader($channels/channel[1])
+    ( renderHeader($channels/channel[1])
+    , renderList($channels/channel[1]/channels)
+    )
   else
     element ul { "&nbsp;" }
 };
 
-declare function renderHeader($channel as element()?) as element()* {
+declare function renderHeader($channel as element()) as element()* {
   element h2 {
-    element a {
-      attribute href {
-        $channel/path/text()
-      },
-      $channel/name/text()
-    }
+    renderLink($channel)
   },
   element hr {}
+};
+
+declare function renderLink($channel as element()) as element() {
+  element a {
+    attribute href {
+      $channel/path/text()
+    },
+    $channel/name/text()
+  }
+};
+
+declare function renderList($channels as element()?) as element()? {
+  if (fn:exists($channels)) then
+    element ul {
+      for $ch in $channels
+      return element li {
+        renderLink($ch)
+      }
+    }
+  else
+    ()
 };
