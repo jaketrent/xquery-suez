@@ -407,3 +407,33 @@ declare function (:TEST:) isolate_noMatch3Levels1LevelExists() {
   return tu:assertEq($actual, $expected, "If the no-match-levels option is more than what exists, show what exists")
 };
 
+declare function (:TEST:) isolate_noMatch1Level2Exist() {
+  let $url := "/no/match/"
+  let $channels :=
+    <channels>
+      <channel>
+        <name>Still Shown</name>
+        <path>/even/without/match/</path>
+        <channels>
+          <channel>
+            <name>Not Shown</name>
+            <path>/exists/but/too/deep/</path>
+          </channel>
+        </channels>
+      </channel>
+    </channels>
+  let $options :=
+    <options>
+      <no-match-levels>3</no-match-levels>
+    </options>
+  let $expected :=
+    <channels>
+      <channel>
+        <name>Still Shown</name>
+        <path>/even/without/match/</path>
+      </channel>
+    </channels>
+  let $actual := channel:isolate($url, $channels, $options)
+  return tu:assertEq($actual, $expected, "Show no more child levels than the no-match option specifies")
+};
+
