@@ -13,23 +13,14 @@ declare function render($channels as element()?) as element()* {
     element ul { "&nbsp;" }
 };
 
-declare function renderHeader($channel as element()) as element()* {
+declare private function renderHeader($channel as element()) as element()* {
   element h2 {
     renderLink($channel)
   },
   element hr {}
 };
 
-declare function renderLink($channel as element()) as element() {
-  element a {
-    attribute href {
-      $channel/path/text()
-    },
-    $channel/name/text()
-  }
-};
-
-declare function renderList($channels as element()?) as element()? {
+declare private function renderList($channels as element()?) as element()? {
   if (fn:exists($channels)) then
     element ul {
       for $ch in $channels
@@ -39,4 +30,13 @@ declare function renderList($channels as element()?) as element()? {
     }
   else
     ()
+};
+
+declare private function renderLink($channel as element()) as element() {
+  element a {
+    attribute href {
+      $channel/path/text()
+    },
+    $channel/name/text()
+  }
 };
