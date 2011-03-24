@@ -66,8 +66,10 @@ declare function (:TEST:) render_level2ListNoActive() {
         <name>Header</name>
         <path>/header/</path>
         <channels>
-          <name>List Item 1</name>
-          <path>/list/item/1/</path>
+          <channel>
+            <name>List Item 1</name>
+            <path>/list/item/1/</path>
+          </channel>
         </channels>
       </channel>
     </channels>
@@ -90,14 +92,16 @@ declare function (:TEST:) render_level3ListNoActive() {
         <name>Header</name>
         <path>/header/</path>
         <channels>
-          <name>List Item 1</name>
-          <path>/list/item/1/</path>
-          <channels>
-            <channel>
-              <name>Indented Item 1</name>
-              <path>/list/item/1/indented/1/</path>
-            </channel>
-          </channels>
+          <channel>
+            <name>List Item 1</name>
+            <path>/list/item/1/</path>
+            <channels>
+              <channel>
+                <name>Indented Item 1</name>
+                <path>/list/item/1/indented/1/</path>
+              </channel>
+            </channels>
+          </channel>
         </channels>
       </channel>
     </channels>

@@ -21,11 +21,13 @@ declare private function renderHeader($channel as element()) as element()* {
 };
 
 declare private function renderList($channels as element()?) as element()? {
-  if (fn:exists($channels)) then
+  if (fn:exists($channels/channel)) then
     element ul {
-      for $ch in $channels
+      for $ch in $channels/channel
       return element li {
-        renderLink($ch)
+        ( renderLink($ch)
+        , renderList($ch/channels)
+        ) 
       }
     }
   else
