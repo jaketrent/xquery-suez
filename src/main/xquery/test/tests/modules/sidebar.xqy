@@ -123,3 +123,50 @@ declare function (:TEST:) render_level3ListNoActive() {
   let $actual := sidebar:render($channels)
   return tu:assertEq($actual, $expected/*, "Level 3 channels go to indented level 2 list, no active if not set")
 };
+
+declare function (:TEST:) render_activePathOver3Levels() {
+  let $channels :=
+    <channels>
+      <channel active="true">
+        <name>Header</name>
+        <path>/header/</path>
+        <channels>
+          <channel>
+            <name>List Item 1</name>
+            <path>/list/item/1/</path>
+          </channel>
+          <channel active="true">
+            <name>List Item 2</name>
+            <path>/list/item/2/</path>
+            <channels>
+              <channel active="true">
+                <name>Indented Item 2 - 1</name>
+                <path>/list/item/2/indented/1/</path>
+              </channel>
+              <channel>
+                <name>Indented Item 2 - 2</name>
+                <path>/list/item/2/indented/2/</path>
+              </channel>
+            </channels>
+          </channel>
+        </channels>
+      </channel>
+    </channels>
+  let $expected :=
+    <expected>
+      <h2><a href="/header/">Header</a></h2>
+      <hr />
+      <ul>
+        <li><a href="/list/item/1/">List Item 1</a></li>
+        <li>
+          <a href="/list/item/2/">List Item 2</a>
+          <ul>
+            <li class="active"><a href="/list/item/2/indented/1/">Indented Item 2 - 1</a></li>
+            <li><a href="/list/item/2/indented/1/">Indented Item 2 - 2</a></li>
+          </ul>
+        </li>
+      </ul>
+    </expected>
+  let $actual := sidebar:render($channels)
+  return tu:assertEq($actual, $expected/*, "Level 3 (lowest) link only gets the active class")
+};
