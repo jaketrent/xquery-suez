@@ -359,3 +359,27 @@ declare function (:TEST:) isolate_showOnlyActiveChannelsSubchannel() {
   return tu:assertEq($actual, $expected, "Subchannels should only be shown along active path into the tree")
 };
 
+declare function (:TEST:) isolate_noMatchLevels() {
+  let $url := "/no/match/"
+  let $channels :=
+    <channels>
+      <channel>
+        <name>Still Shown</name>
+        <path>/even/without/match/</path>
+      </channel>
+    </channels>
+  let $options :=
+    <options>
+      <no-match-levels>1</no-match-levels>
+    </options>
+  let $expected :=
+    <channels>
+      <channel>
+        <name>Still Shown</name>
+        <path>/even/without/match/</path>
+      </channel>
+    </channels>
+  let $actual := channel:isolate($url, $channels)
+  return tu:assertEq($actual, $expected, "No url match can give you level of inactive children")
+};
+
