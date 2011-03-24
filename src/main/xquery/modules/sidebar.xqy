@@ -6,7 +6,7 @@ declare option xdmp:mapping "false";
 
 declare function render($channels as element()?) as element()* {
   if (fn:exists($channels) and fn:exists($channels/channel)) then
-    renderHeader($channels/channel)
+    renderHeader($channels/channel[1])
   else
     element ul { "&nbsp;" }
 };
