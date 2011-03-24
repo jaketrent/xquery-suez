@@ -4,6 +4,24 @@ module namespace channel = "http://missionary.lds.org/audience/cutlass/modules/c
 
 declare option xdmp:mapping "false";
 
+declare function build
+    ( $url as xs:string?
+    , $channels as element()?
+    , $builder as xdmp:function
+    ) as element()? {
+  build($url, $channels, $builder, ())
+};
+
+declare function build
+    ( $url as xs:string?
+    , $channels as element()?
+    , $builder as xdmp:function
+    , $options as element()?
+    ) as element()? {
+  let $channels := isolate($url, $channels, $options)
+  return xdmp:apply($builder, $channels)
+};
+
 declare function isolate($url as xs:string?, $channels as element()?) as element()? {
   isolate($url, $channels, ())
 };
@@ -78,15 +96,15 @@ declare function getChannelNoSubchannels($channels as element()*) as element()* 
   }
 };
 
-declare function lessThanChildLevel($levelsAdded as xs:int, $options as element()?) as xs:boolean {
+declare private function lessThanChildLevel($levelsAdded as xs:int, $options as element()?) as xs:boolean {
   fn:exists($options/child-levels) and $levelsAdded lt xs:int($options/child-levels)
 };
 
-declare function lessThanNoMatchLevel($levelsAdded as xs:int, $options as element()?) as xs:boolean {
+declare private function lessThanNoMatchLevel($levelsAdded as xs:int, $options as element()?) as xs:boolean {
   fn:exists($options/no-match-levels) and $levelsAdded lt xs:int($options/no-match-levels)
 };
 
-declare function addChildChannels
+declare private function addChildChannels
     ( $activeChannel as element()?
     , $levelsAdded as xs:int
     , $okToAddLevel as xdmp:function
