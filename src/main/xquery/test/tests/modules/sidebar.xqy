@@ -20,3 +20,20 @@ declare function (:TEST:) render_channelsNoChannel() {
   let $actual := sidebar:render($channels)
   return tu:assertEq($actual, $expected, "No channel data, empty ul")
 };
+  
+declare function (:TEST:) render_headerOnly() {
+  let $channels :=
+    <channels>
+      <channel>
+        <name>Header</name>
+        <path>/header/</path>
+      </channel>
+    </channels>
+  let $expected :=
+    <expected>
+      <h2><a href="/header/">Header</a></h2>
+      <h2 />
+    </expected>
+  let $actual := sidebar:render($channels)
+  return tu:assertEq($actual, $expected/*, "One top level channel should render only header")
+};
