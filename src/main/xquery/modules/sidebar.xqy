@@ -4,9 +4,21 @@ module namespace sidebar = "http://missionary.lds.org/audience/cutlass/modules/s
 
 declare option xdmp:mapping "false";
 
-declare function render($channels as element()?) as element()? {
+declare function render($channels as element()?) as element()* {
   if (fn:exists($channels) and fn:exists($channels/channel)) then
-    ()
+    renderHeader($channels/channel)
   else
     element ul { "&nbsp;" }
+};
+
+declare function renderHeader($channel as element()?) as element()* {
+  element h2 {
+    element a {
+      attribute href {
+        $channel/path/text()
+      },
+      $channel/name/text()
+    }
+  },
+  element hr {}
 };

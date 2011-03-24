@@ -32,7 +32,7 @@ declare function (:TEST:) render_headerOnly() {
   let $expected :=
     <expected>
       <h2><a href="/header/">Header</a></h2>
-      <h2 />
+      <hr />
     </expected>
   let $actual := sidebar:render($channels)
   return tu:assertEq($actual, $expected/*, "One top level channel should render only header")
