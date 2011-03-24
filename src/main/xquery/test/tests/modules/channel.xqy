@@ -424,7 +424,7 @@ declare function (:TEST:) isolate_noMatch1Level2Exist() {
     </channels>
   let $options :=
     <options>
-      <no-match-levels>3</no-match-levels>
+      <no-match-levels>1</no-match-levels>
     </options>
   let $expected :=
     <channels>
@@ -436,4 +436,6 @@ declare function (:TEST:) isolate_noMatch1Level2Exist() {
   let $actual := channel:isolate($url, $channels, $options)
   return tu:assertEq($actual, $expected, "Show no more child levels than the no-match option specifies")
 };
+
+
 
