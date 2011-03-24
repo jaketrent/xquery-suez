@@ -57,7 +57,7 @@ declare private function reverseBuildTree($activeChannel as element()?, $newTree
           if (fn:exists($newTree)) then
             $newTree
           else
-            addChildChannels($activeChannel, $options)
+            addChildChannels($activeChannel, 0, $options)
         },
         $activeChannel/following-sibling::channel
       }
@@ -65,10 +65,16 @@ declare private function reverseBuildTree($activeChannel as element()?, $newTree
     return reverseBuildTree($shallowerChannel, $newLevel, $options)
 };
 
-declare function addChildChannels($activeChannel as element(), $options as element()?) as element()? {
-  if (fn:exists($options/child-levels)) then
+declare function addChildChannels($activeChannel as element(), $numLevels as xs:int, $options as element()?) as element()? {
+  let $childLevels := $options/child-levels
+  return if (fn:exists($childLevels) and $numLevels lt xs:int($options/child-levels)) then
     element channels {
-      $activeChannel/channels/channel
+      for $channel in $activeChannel/channels/channel
+      return element channel {
+        $channel/@*,
+        $channel/(* except channels),
+        addChildChannels($channel, $numLevels + 1, $options)
+      }
     }
   else
     ()
