@@ -5,5 +5,8 @@ module namespace sidebar = "http://missionary.lds.org/audience/cutlass/modules/s
 declare option xdmp:mapping "false";
 
 declare function render($channels as element()?) as element()? {
-  ()
+  if (fn:exists($channels)) then
+    ()
+  else
+    element ul { "&nbsp;" }
 };
