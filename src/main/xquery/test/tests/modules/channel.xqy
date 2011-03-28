@@ -512,7 +512,37 @@ declare function (:TEST:) isolate_limitDeep1Level2Exist() {
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels, $options)
-  return tu:assertEq($actual, $expected, "Explicitly limit levels shown with limit-levels")
+  return tu:assertEq($actual, $expected, "Explicitly limit levels, from deepest point, shown with limit-deep-levels")
+};
+
+declare function (:TEST:) isolate_limitShallow1Level2Exist() {
+  let $url := "/not/shallow/enough/"
+  let $channels :=
+    <channels>
+      <channel>
+        <name>Show</name>
+        <path>/as/shallowest/</path>
+        <channels>
+          <channel>
+            <name>No Shown</name>
+            <path>/not/shallow/enough/</path>
+          </channel>
+        </channels>
+      </channel>
+    </channels>
+  let $options :=
+    <options>
+      <limit-shallow-levels>1</limit-shallow-levels>
+    </options>
+  let $expected :=
+    <channels>
+      <channel active="true">
+        <name>Show</name>
+        <path>/as/shallowest/</path>
+      </channel>
+    </channels>
+  let $actual := channel:isolate($url, $channels, $options)
+  return tu:assertEq($actual, $expected, "Explicitly limit levels, from shallowest points, shown with limit-shallow-levels")
 };
 
 
