@@ -516,16 +516,16 @@ declare function (:TEST:) isolate_limitDeep1Level2Exist() {
 };
 
 declare function (:TEST:) isolate_limitShallow1Level2Exist() {
-  let $url := "/not/shallow/enough/"
+  let $url := "/shallow/but/not/enough/"
   let $channels :=
     <channels>
       <channel>
         <name>Show</name>
-        <path>/as/shallowest/</path>
+        <path>/shallow/but/</path>
         <channels>
           <channel>
             <name>No Shown</name>
-            <path>/not/shallow/enough/</path>
+            <path>/shallow/but/not/enough/</path>
           </channel>
         </channels>
       </channel>
@@ -538,7 +538,7 @@ declare function (:TEST:) isolate_limitShallow1Level2Exist() {
     <channels>
       <channel active="true">
         <name>Show</name>
-        <path>/as/shallowest/</path>
+        <path>/shallow/but/</path>
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels, $options)
