@@ -30,7 +30,7 @@ declare function isolate($url as xs:string?, $channels as element()?, $options a
   if (fn:exists($url) and fn:exists($channels)) then
     let $match := findDeepestChannel($url, $channels)
     return if (fn:exists($match)) then
-      reverseBuildTree($match, (), $options)
+      reverseBuildTree($match, (), 0, $options)
     else
       addChildChannels(element channel { $channels }, 0,
         xdmp:function(xs:QName("channel:lessThanNoMatchLevel")), $options)
@@ -63,9 +63,10 @@ declare private function rmOneUrlLevel($url as xs:string) as xs:string {
 declare private function reverseBuildTree
     ( $activeChannel as element()?
     , $newTree as element()?
+    , $levelsAdded as xs:int
     , $options as element()?
     ) as element()? {
-  if (fn:empty($activeChannel)) then
+  if (fn:empty($activeChannel) or reachedDeepLevelLimit($levelsAdded, $options)) then
     $newTree
   else
     let $newLevel :=
@@ -85,7 +86,7 @@ declare private function reverseBuildTree
         getChannelNoSubchannels($activeChannel/following-sibling::channel)
       }
     let $shallowerChannel := $activeChannel/../..
-    return reverseBuildTree($shallowerChannel, $newLevel, $options)
+    return reverseBuildTree($shallowerChannel, $newLevel, $levelsAdded + 1, $options)
 };
 
 declare function getChannelNoSubchannels($channels as element()*) as element()* {
@@ -94,6 +95,10 @@ declare function getChannelNoSubchannels($channels as element()*) as element()* 
     $ch/@*,
     $ch/(* except channels)
   }
+};
+
+declare private function reachedDeepLevelLimit($levelsAdded as xs:int, $options as element()?) as xs:boolean {
+  fn:exists($options/limit-deep-levels) and $levelsAdded eq xs:int($options/limit-deep-levels)
 };
 
 declare private function lessThanChildLevel($levelsAdded as xs:int, $options as element()?) as xs:boolean {
