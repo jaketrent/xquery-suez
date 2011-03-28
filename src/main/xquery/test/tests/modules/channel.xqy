@@ -485,30 +485,30 @@ declare function (:TEST:) isolate_noMatch1Level2Exist() {
   return tu:assertEq($actual, $expected, "Show no more child levels than the no-match option specifies")
 };
 
-declare function (:TEST:) isolate_limit1Level2Exist() {
-  let $url := "/exists/but/too/deep/"
+declare function (:TEST:) isolate_limitDeep1Level2Exist() {
+  let $url := "/as/deepest/"
   let $channels :=
     <channels>
       <channel>
-        <name>Still Shown</name>
-        <path>/even/without/match/</path>
+        <name>Not Shown</name>
+        <path>/even/though/shallower/</path>
         <channels>
           <channel>
-            <name>Not Shown</name>
-            <path>/exists/but/too/deep/</path>
+            <name>Show</name>
+            <path>/as/deepest/</path>
           </channel>
         </channels>
       </channel>
     </channels>
   let $options :=
     <options>
-      <limit-levels>1</limit-levels>
+      <limit-deep-levels>1</limit-deep-levels>
     </options>
   let $expected :=
     <channels>
-      <channel>
-        <name>Still Shown</name>
-        <path>/even/without/match/</path>
+      <channel active="true">
+        <name>Show</name>
+        <path>/as/deepest/</path>
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels, $options)
