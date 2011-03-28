@@ -28,7 +28,7 @@ declare function isolate($url as xs:string?, $channels as element()?) as element
 
 declare function isolate($url as xs:string?, $channels as element()?, $options as element()?) as element()? {
   if (fn:exists($url) and fn:exists($channels)) then
-    let $match := findDeepestChannel($url, $channels)
+    let $match := findDeepestChannel($url, $channels, $options)
     return if (fn:exists($match)) then
       reverseBuildTree($match, (), 0, $options)
     else
@@ -38,16 +38,32 @@ declare function isolate($url as xs:string?, $channels as element()?, $options a
     ()
 };
 
-declare private function findDeepestChannel($url as xs:string, $channels as element()?) as element()? {
+declare private function findDeepestChannel
+    ( $url as xs:string
+    , $channels as element()?
+    , $options as element()?
+    ) as element()? {
   let $match := $channels//channel[path eq $url]
-  return if (fn:exists($match)) then
+  return if (fn:exists($match) and lessThanShallowLevelLimit($match, $options)) then
     $match
   else
     let $shallowerUrl := rmOneUrlLevel($url)
     return if ($shallowerUrl eq "/") then
       ()
     else
-      findDeepestChannel($shallowerUrl, $channels)
+      findDeepestChannel($shallowerUrl, $channels, $options)
+};
+
+declare function lessThanShallowLevelLimit($match as element(), $options as element()?) as xs:boolean {
+  if (fn:exists($options/limit-shallow-levels)) then
+
+    let $ancestors := fn:count($match/ancestor::channels)
+    let $log := xdmp:log(fn:concat("ANCESTORS: ", $ancestors), "info")
+    let $ok := $ancestors lt (xs:int($options/limit-shallow-levels) + 1)
+    let $log := xdmp:log(fn:concat("OK: ", $ok), "info")
+    return $ok
+  else
+    fn:true()
 };
 
 declare private function rmOneUrlLevel($url as xs:string) as xs:string {
