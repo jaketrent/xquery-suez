@@ -485,5 +485,35 @@ declare function (:TEST:) isolate_noMatch1Level2Exist() {
   return tu:assertEq($actual, $expected, "Show no more child levels than the no-match option specifies")
 };
 
+declare function (:TEST:) isolate_limit1Level2Exist() {
+  let $url := "/exists/but/too/deep/"
+  let $channels :=
+    <channels>
+      <channel>
+        <name>Still Shown</name>
+        <path>/even/without/match/</path>
+        <channels>
+          <channel>
+            <name>Not Shown</name>
+            <path>/exists/but/too/deep/</path>
+          </channel>
+        </channels>
+      </channel>
+    </channels>
+  let $options :=
+    <options>
+      <limit-levels>1</limit-levels>
+    </options>
+  let $expected :=
+    <channels>
+      <channel>
+        <name>Still Shown</name>
+        <path>/even/without/match/</path>
+      </channel>
+    </channels>
+  let $actual := channel:isolate($url, $channels, $options)
+  return tu:assertEq($actual, $expected, "Explicitly limit levels shown with limit-levels")
+};
+
 
 
