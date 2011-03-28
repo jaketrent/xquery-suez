@@ -542,7 +542,32 @@ declare function (:TEST:) isolate_limitShallow1Level2Exist() {
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels, $options)
-  return tu:assertEq($actual, $expected, "Explicitly limit levels, from shallowest points, shown with limit-shallow-levels")
+  return tu:assertEq($actual, $expected,
+    "Explicitly limit levels, from shallowest points, shown with limit-shallow-levels")
+};
+
+declare function (:TEST:) isolate_limitShallow1Level2ExistNonHierarchicalUrl() {
+  let $url := "/shallow/but/not/enough/"
+  let $channels :=
+    <channels>
+      <channel>
+        <name>Would be shown if not on a</name>
+        <path>/different/path/</path>
+        <channels>
+          <channel>
+            <name>No Shown</name>
+            <path>/shallow/but/not/enough/</path>
+          </channel>
+        </channels>
+      </channel>
+    </channels>
+  let $options :=
+    <options>
+      <limit-shallow-levels>1</limit-shallow-levels>
+    </options>
+  let $actual := channel:isolate($url, $channels, $options)
+  return tu:assertEmpty($actual,
+    "Shallow end limits won't show channels that aren't more general paths of the path actually matched")
 };
 
 
