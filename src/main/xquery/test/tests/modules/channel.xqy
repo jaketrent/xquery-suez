@@ -3,7 +3,7 @@ xquery version "1.0-ml";
 module namespace t = "http://missionary.lds.org/audience/cutlass/test/tests/modules/channel";
 
 import module namespace channel = "http://missionary.lds.org/audience/cutlass/modules/channel" at "/modules/channel.xqy";
-import module namespace tu = "http://lds.org/code/shared/xqtest/utils" at "/shared/xqtest/utils.xqy";
+import module namespace assert = "http://lds.org/code/shared/xqtest/assert" at "/shared/xqtest/assert.xqy";
 
 declare option xdmp:mapping "false";
 
@@ -11,28 +11,28 @@ declare function (:TEST:) isolate_noUrlNoChannels() {
   let $url := ()
   let $channels := ()
   let $actual := channel:isolate($url, $channels)
-  return tu:assertEmpty($actual, "No url, no channel, no result")
+  return assert:empty($actual, "No url, no channel, no result")
 };
 
 declare function (:TEST:) isolate_noUrlWithChannels() {
   let $url := ()
   let $channels := <channels />
   let $actual := channel:isolate($url, $channels)
-  return tu:assertEmpty($actual, "No url, with channels, no result")
+  return assert:empty($actual, "No url, with channels, no result")
 };
 
 declare function (:TEST:) isolate_withUrlNoChannels() {
   let $url := "/some/url/"
   let $channels := ()
   let $actual := channel:isolate($url, $channels)
-  return tu:assertEmpty($actual, "With url, no channels, no result")
+  return assert:empty($actual, "With url, no channels, no result")
 };
 
 declare function (:TEST:) isolate_unmatchedUrl() {
   let $url := "/some/url/"
   let $channels := <channels />
   let $actual := channel:isolate($url, $channels)
-  return tu:assertEmpty($actual, "With url, no channels, no result")
+  return assert:empty($actual, "With url, no channels, no result")
 };
 
 declare function (:TEST:) isolate_matchWholeTree() {
@@ -52,7 +52,7 @@ declare function (:TEST:) isolate_matchWholeTree() {
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels)
-  return tu:assertEq($actual, $expected, "Whole tree matched, tree returned")
+  return assert:equal($actual, $expected, "Whole tree matched, tree returned")
 };
 
 declare function (:TEST:) isolate_matchLevel1() {
@@ -80,7 +80,7 @@ declare function (:TEST:) isolate_matchLevel1() {
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels)
-  return tu:assertEq($actual, $expected, "Match found on tree level1, make active")
+  return assert:equal($actual, $expected, "Match found on tree level1, make active")
 };
   
 declare function (:TEST:) isolate_matchLevel2() {
@@ -120,7 +120,7 @@ declare function (:TEST:) isolate_matchLevel2() {
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels)
-  return tu:assertEq($actual, $expected, "Matched level2 channel, active path across levels")
+  return assert:equal($actual, $expected, "Matched level2 channel, active path across levels")
 };
 
 declare function (:TEST:) isolate_getClosestMatchToSpecificMatch() {
@@ -140,7 +140,7 @@ declare function (:TEST:) isolate_getClosestMatchToSpecificMatch() {
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels)
-  return tu:assertEq($actual, $expected, "Hierarchal urls should match at more general levels if url isn't specified")
+  return assert:equal($actual, $expected, "Hierarchal urls should match at more general levels if url isn't specified")
 };
 
 declare function (:TEST:) isolate_buildOneChildLevel() {
@@ -176,7 +176,7 @@ declare function (:TEST:) isolate_buildOneChildLevel() {
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels, $options)
-  return tu:assertEq($actual, $expected, "Option of inactive child channels gets respect")
+  return assert:equal($actual, $expected, "Option of inactive child channels gets respect")
 };
 
 declare function (:TEST:) isolate_buildTwoChildLevel() {
@@ -224,7 +224,7 @@ declare function (:TEST:) isolate_buildTwoChildLevel() {
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels, $options)
-  return tu:assertEq($actual, $expected, "Child-levels can go multiple levels deep")
+  return assert:equal($actual, $expected, "Child-levels can go multiple levels deep")
 };
 
 declare function (:TEST:) isolate_buildOneChildLevelWhenTwoExist() {
@@ -266,7 +266,7 @@ declare function (:TEST:) isolate_buildOneChildLevelWhenTwoExist() {
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels, $options)
-  return tu:assertEq($actual, $expected, "Child-levels can go multiple levels deep")
+  return assert:equal($actual, $expected, "Child-levels can go multiple levels deep")
 };
 
 declare function (:TEST:) isolate_buildMaxChildLevelsIfSetToMore() {
@@ -302,7 +302,7 @@ declare function (:TEST:) isolate_buildMaxChildLevelsIfSetToMore() {
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels, $options)
-  return tu:assertEq($actual, $expected, "If the child-levels option is more than what exists, show what exists")
+  return assert:equal($actual, $expected, "If the child-levels option is more than what exists, show what exists")
 };
 
 declare function (:TEST:) isolate_buildOneChildLevelMultipleChildren() {
@@ -346,7 +346,7 @@ declare function (:TEST:) isolate_buildOneChildLevelMultipleChildren() {
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels, $options)
-  return tu:assertEq($actual, $expected, "Child-levels must print all children")
+  return assert:equal($actual, $expected, "Child-levels must print all children")
 };
 
 declare function (:TEST:) isolate_showOnlyActiveChannelsSubchannel() {
@@ -392,7 +392,7 @@ declare function (:TEST:) isolate_showOnlyActiveChannelsSubchannel() {
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels)
-  return tu:assertEq($actual, $expected, "Subchannels should only be shown along active path into the tree")
+  return assert:equal($actual, $expected, "Subchannels should only be shown along active path into the tree")
 };
 
 declare function (:TEST:) isolate_noMatch1Level() {
@@ -416,7 +416,7 @@ declare function (:TEST:) isolate_noMatch1Level() {
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels, $options)
-  return tu:assertEq($actual, $expected, "No url match can give you level of inactive children")
+  return assert:equal($actual, $expected, "No url match can give you level of inactive children")
 };
 
 declare function (:TEST:) isolate_noMatch3Levels2LevelsExists() {
@@ -452,7 +452,7 @@ declare function (:TEST:) isolate_noMatch3Levels2LevelsExists() {
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels, $options)
-  return tu:assertEq($actual, $expected, "If the no-match-levels option is more than what exists, show what exists")
+  return assert:equal($actual, $expected, "If the no-match-levels option is more than what exists, show what exists")
 };
 
 declare function (:TEST:) isolate_noMatch1Level2Exist() {
@@ -482,7 +482,7 @@ declare function (:TEST:) isolate_noMatch1Level2Exist() {
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels, $options)
-  return tu:assertEq($actual, $expected, "Show no more child levels than the no-match option specifies")
+  return assert:equal($actual, $expected, "Show no more child levels than the no-match option specifies")
 };
 
 declare function (:TEST:) isolate_limitDeep1Level2Exist() {
@@ -512,7 +512,7 @@ declare function (:TEST:) isolate_limitDeep1Level2Exist() {
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels, $options)
-  return tu:assertEq($actual, $expected, "Explicitly limit levels, from deepest point, shown with limit-deep-levels")
+  return assert:equal($actual, $expected, "Explicitly limit levels, from deepest point, shown with limit-deep-levels")
 };
 
 declare function (:TEST:) isolate_limitShallow1Level2Exist() {
@@ -542,7 +542,7 @@ declare function (:TEST:) isolate_limitShallow1Level2Exist() {
       </channel>
     </channels>
   let $actual := channel:isolate($url, $channels, $options)
-  return tu:assertEq($actual, $expected,
+  return assert:equal($actual, $expected,
     "Explicitly limit levels, from shallowest points, shown with limit-shallow-levels")
 };
 
@@ -566,7 +566,7 @@ declare function (:TEST:) isolate_limitShallow1Level2ExistNonHierarchicalUrl() {
       <limit-shallow-levels>1</limit-shallow-levels>
     </options>
   let $actual := channel:isolate($url, $channels, $options)
-  return tu:assertEmpty($actual,
+  return assert:empty($actual,
     "Shallow end limits won't show channels that aren't more general paths of the path actually matched")
 };
 

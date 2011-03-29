@@ -3,7 +3,7 @@ xquery version "1.0-ml";
 module namespace t = "http://missionary.lds.org/audience/cutlass/test/tests/modules/sidebar";
 
 import module namespace sidebar = "http://missionary.lds.org/audience/cutlass/modules/sidebar" at "/modules/sidebar.xqy";
-import module namespace tu = "http://lds.org/code/shared/xqtest/utils" at "/shared/xqtest/utils.xqy";
+import module namespace assert = "http://lds.org/code/shared/xqtest/assert" at "/shared/xqtest/assert.xqy";
 
 declare option xdmp:mapping "false";
 
@@ -11,14 +11,14 @@ declare function (:TEST:) render_noChannels() {
   let $channels := ()
   let $expected := <ul>&nbsp;</ul>
   let $actual := sidebar:render($channels)
-  return tu:assertEq($actual, $expected, "No channel, empty ul")
+  return assert:equal($actual, $expected, "No channel, empty ul")
 };
 
 declare function (:TEST:) render_channelsNoChannel() {
   let $channels := <channels />
   let $expected := <ul>&nbsp;</ul>
   let $actual := sidebar:render($channels)
-  return tu:assertEq($actual, $expected, "No channel data, empty ul")
+  return assert:equal($actual, $expected, "No channel data, empty ul")
 };
   
 declare function (:TEST:) render_headerOnly() {
@@ -35,7 +35,7 @@ declare function (:TEST:) render_headerOnly() {
       <hr />
     </expected>
   let $actual := sidebar:render($channels)
-  return tu:assertEq($actual, $expected/*, "One top level channel should render only header")
+  return assert:equal($actual, $expected/*, "One top level channel should render only header")
 };
   
 declare function (:TEST:) render_headerOnlyMultipleLevel1Channel() {
@@ -56,7 +56,7 @@ declare function (:TEST:) render_headerOnlyMultipleLevel1Channel() {
       <hr />
     </expected>
   let $actual := sidebar:render($channels)
-  return tu:assertEq($actual, $expected/*, "Multiple channels, default to 1st for header")
+  return assert:equal($actual, $expected/*, "Multiple channels, default to 1st for header")
 };
 
 declare function (:TEST:) render_level2ListNoActive() {
@@ -82,7 +82,7 @@ declare function (:TEST:) render_level2ListNoActive() {
       </ul>
     </expected>
   let $actual := sidebar:render($channels)
-  return tu:assertEq($actual, $expected/*, "Level 2 channels go to level 1 list, no active if not set")
+  return assert:equal($actual, $expected/*, "Level 2 channels go to level 1 list, no active if not set")
 };
   
 declare function (:TEST:) render_level3ListNoActive() {
@@ -121,7 +121,7 @@ declare function (:TEST:) render_level3ListNoActive() {
       </ul>
     </expected>
   let $actual := sidebar:render($channels)
-  return tu:assertEq($actual, $expected/*, "Level 3 channels go to indented level 2 list, no active if not set")
+  return assert:equal($actual, $expected/*, "Level 3 channels go to indented level 2 list, no active if not set")
 };
 
 declare function (:TEST:) render_activePathOver3Levels() {
@@ -168,5 +168,5 @@ declare function (:TEST:) render_activePathOver3Levels() {
       </ul>
     </expected>
   let $actual := sidebar:render($channels)
-  return tu:assertEq($actual, $expected/*, "Level 3 (lowest) link only gets the active class")
+  return assert:equal($actual, $expected/*, "Level 3 (lowest) link only gets the active class")
 };

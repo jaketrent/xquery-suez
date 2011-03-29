@@ -1,7 +1,7 @@
 xquery version "1.0-ml";
 
-import module namespace unit = "http://lds.org/code/shared/xqtest/unit" at "/shared/xqtest/unit.xqy";
+import module namespace html = "http://lds.org/code/shared/xqtest/html" at "/shared/xqtest/html.xqy";
 
 declare option xdmp:mapping "false";
 
-unit:test()
+html:test()
