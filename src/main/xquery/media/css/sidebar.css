@@ -1,0 +1,67 @@
+body {
+  background: #2A3753;
+  font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Arial, Helvetica, sans-serif;
+  color: #fff;
+}
+.sidebar {
+  position: relative;
+  margin-left: 150px;
+  width: 250px;
+}
+.sidebar h2 {
+	margin: 40px 0 13px;
+	padding: 0;
+	color: #fff;
+	font-size: 30px;
+}
+.sidebar h2 a {
+	color: #fff;
+	text-decoration: none;
+}
+.sidebar hr {
+	width: 125px;
+	margin: 0 0 6px;
+	*margin-bottom: 0;
+	padding: 0;
+	display: block;
+	float: left;
+	border: none;
+	border-bottom: 6px solid #74f0ff;
+}
+.sidebar ul {
+  list-style: none;
+}
+.sidebar > ul {
+	margin: 0;
+	padding: 0;
+	display: block;
+	clear: both;
+	color: #a2b1c9;
+	font-size: 24px;
+}
+.sidebar > ul > li {border-bottom: 1px dotted #4d6791;}
+.sidebar ul a,
+.sidebar ul div {
+    color: #a2b1c9;
+    text-decoration: none;
+    padding: 8px 10px 8px 0;
+    display: block;
+}
+.sidebar a:hover {color: #fff;}
+.sidebar ul li.active > a {
+    color: #fff;
+    zoom: 1;
+}
+.sidebar ul li.active > a:after {
+  content: "\00a0\2192";
+}
+
+.sidebar > ul ul {
+    margin: 0 0 20px 10px;
+    font-size: 18px;
+}
+.sidebar > ul  ul  ul {
+    margin: 0 0 5px 15px;
+    font-size: 14px;
+}
+.sidebar > ul ul a {padding: 6px 10px 6px 0;}

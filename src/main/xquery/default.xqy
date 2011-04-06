@@ -5,7 +5,7 @@ import module namespace sidebar = "http://missionary.lds.org/audience/cutlass/mo
 
 declare option xdmp:mapping "false";
 
-let $activeUrl := xdmp:get-request-field("url", "/dress-grooming/grooming/demo/")
+let $activeUrl := xdmp:get-request-field("url", "/dress-grooming/grooming/demo/skin/")
 let $channels := fn:collection()/channels[@app eq "suez"]
 let $options :=
   <options>
@@ -22,10 +22,13 @@ xdmp:set-response-content-type( "text/html" ),
 <html>
   <head>
     <title>Xquery-suez Demo</title>
+    <link rel="stylesheet" href="/media/css/sidebar.css" />
   </head>
   <body>
     <h1>Xquery Suez Demo</h1>
-    {$sidebar}
+    <div class="sidebar">
+      {$sidebar}
+    </div>
   </body>
 </html>
 )
