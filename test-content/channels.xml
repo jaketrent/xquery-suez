@@ -1,4 +1,4 @@
-<channels>
+<channels app="suez">
   <channel>
     <name>Missionary Service</name>
     <path>http://lds.org/service/missionary-service</path>

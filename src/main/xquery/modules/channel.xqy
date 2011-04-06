@@ -102,7 +102,11 @@ declare private function reverseBuildTree
         getChannelNoSubchannels($activeChannel/following-sibling::channel)
       }
     let $shallowerChannel := $activeChannel/../..
-    return reverseBuildTree($shallowerChannel, $newLevel, $levelsAdded + 1, $options)
+    return if ($shallowerChannel instance of document-node()) then
+      reverseBuildTree($shallowerChannel[2], $newLevel, $levelsAdded + 1, $options)
+    else
+      reverseBuildTree($shallowerChannel, $newLevel, $levelsAdded + 1, $options)
+
 };
 
 declare function getChannelNoSubchannels($channels as element()*) as element()* {
