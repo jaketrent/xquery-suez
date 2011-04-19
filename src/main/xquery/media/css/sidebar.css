@@ -39,7 +39,9 @@ body {
 	color: #a2b1c9;
 	font-size: 24px;
 }
-.sidebar > ul > li {border-bottom: 1px dotted #4d6791;}
+.sidebar > ul > li {
+  border-bottom: 1px dotted #4d6791;
+}
 .sidebar ul a,
 .sidebar ul div {
     color: #a2b1c9;
@@ -47,7 +49,9 @@ body {
     padding: 8px 10px 8px 0;
     display: block;
 }
-.sidebar a:hover {color: #fff;}
+.sidebar a:hover {
+  color: #fff;
+}
 .sidebar ul li.active > a {
     color: #fff;
     zoom: 1;
@@ -64,4 +68,6 @@ body {
     margin: 0 0 5px 15px;
     font-size: 14px;
 }
-.sidebar > ul ul a {padding: 6px 10px 6px 0;}
+.sidebar > ul ul a {
+  padding: 6px 10px 6px 0;
+}
