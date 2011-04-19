@@ -5,13 +5,12 @@ import module namespace sidebar = "http://missionary.lds.org/audience/cutlass/mo
 
 declare option xdmp:mapping "false";
 
-let $activeUrl := xdmp:get-request-field("url", "/dress-grooming/grooming/demo/skin/")
+let $activeUrl := xdmp:get-request-field("url", "/dress-grooming/grooming/")
 let $channels := fn:collection()/channels[@app eq "suez"]
 let $options :=
   <options>
     <no-match-levels>3</no-match-levels>
-    <child-levels>1</child-levels>
-    <limit-shallow-levels>2</limit-shallow-levels>
+    <limit-shallow-levels>3</limit-shallow-levels>
   </options>
 let $sidebar := channel:render($activeUrl, $channels, xdmp:function(xs:QName("sidebar:render")), $options)
 
